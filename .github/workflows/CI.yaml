@@ -30,6 +30,9 @@ jobs:
         run: |
           poetry install
 
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
       - name: Run tests with coverage
         run: |
           poetry run pytest --cov=.
