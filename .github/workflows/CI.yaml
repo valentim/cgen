@@ -38,9 +38,6 @@ jobs:
           poetry run pytest --cov=.
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@4.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./htmlcov/index.html
-          fail_ci_if_error: true
-          verbose: true
