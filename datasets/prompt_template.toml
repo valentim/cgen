@@ -1,0 +1,28 @@
+[prompt]
+generate_code_template = """
+$text
+
+It must satisfy these test cases:
+$test_cases
+
+Note: Return only the function without any explanations or examples.
+
+Details:
+$details
+
+Errors:
+$errors
+
+This code does not satisfy the test cases:
+$bad_code
+"""
+
+generate_details_template = """
+Details:
+$details
+
+Your task is to add a slight variation based on the details. Return a json in this format:
+```
+{"details": ["slight variation", ...]}
+```
+"""
