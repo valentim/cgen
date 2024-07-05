@@ -1,6 +1,6 @@
 # CGen
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![codecov](https://codecov.io/gh/valentim/cgen/graph/badge.svg?token=V3FFNAQH8E)](https://codecov.io/gh/valentim/cgen)
 
 ## Overview
 
@@ -11,8 +11,9 @@ The primary goal of this project is to develop a code generation system that eva
 
 ## Table of Contents
 - [Pipeline](#pipeline)
-    - [Key Components and Process](key-components-and-process)
+    - [Key Components and Process](#key-components-and-process)
 - [Installation](#installation)
+    - [Requirements](#requirements)
 - [Usage](#usage)
 - [Project Structure](#structure)
 - [Development](#development)
@@ -61,13 +62,17 @@ To install the necessary dependencies, you'll need [Poetry](https://python-poetr
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/your-username/your-repo.git
-   cd your-repo
+   git clone https://github.com/valentim/cgen
+   cd cgen
    ```
 2. Install dependencies
     ```sh
     poetry install
     ```
+## Requirements
+- Python >= 3.10.12
+- Poetry >= 1.1.12
+
 ## Usage
 1. To run the project, use the following command:
     ```sh
