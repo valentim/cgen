@@ -1,0 +1,38 @@
+Case #,Task Description,Code Solution,Score
+1,"Write a function to find the minimum cost path to reach (m, n) from (0, 0) for the given cost matrix cost[][] and a position (m, n) in cost[][].","
+def min_cost(cost, m, n):
+    dp = [[0 for _ in range(n + 1)] for _ in range(m + 1)]
+    
+    dp[0][0] = cost[0][0]
+    
+    for i in range(1, m + 1):
+        dp[i][0] = dp[i - 1][0] + cost[i][0]
+        
+    for j in range(1, n + 1):
+        dp[0][j] = dp[0][j - 1] + cost[0][j]
+        
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            dp[i][j] = min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + cost[i][j]
+    
+    return dp[m][n]
+",100.0
+2,Write a function to find the similar elements from the given two tuple lists.,"
+def similar_elements(tuple1, tuple2):
+    return tuple(sorted(set(tuple1) & set(tuple2)))
+",100.0
+3,Write a python function to identify non-prime numbers.,"
+def is_not_prime(n):
+    if n <= 1:
+        return True
+    if n <= 3:
+        return False
+    if n % 2 == 0 or n % 3 == 0:
+        return True
+    i = 5
+    while (i * i) <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return True
+        i += 6
+    return False
+",100.0
