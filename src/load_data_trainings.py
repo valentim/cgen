@@ -12,34 +12,77 @@ from utils.logger import get_logger
 logger = get_logger(__name__)
 
 
-def generate_context(solution: str, test_list: list) -> str:
-    """Generate context from solution and test list."""
-    context = f"Solution:\n{solution}\n\nTest List:\n" + "\n".join(test_list)
-    return context
+class LoadDataTrainings:
+    def __init__(self, trainings: Trainings, ai_provider: OpenAIProvider):
+        self.trainings = trainings
+        self.ai_provider = ai_provider
 
 
-def process_csv_and_store(
-    data: List[dict], trainings: Trainings, ai_provider: OpenAIProvider
-):
-    """Process CSV file, generate embeddings and store data in the database."""
-    for item in data:
-        task_id = item["task_id"]
+    def generate_context(self, solution: str, test_list: list) -> str:
+        """
+        Generate a context string from the provided solution and test list.
 
-        if trainings.get_training_by_task_id(task_id):
-            logger.info(f"Training for task: {task_id} already exists. Skipping...")
-            continue
+        This method formats the solution and test list into a single string that
+        includes the solution followed by the test list. The test list items are 
+        concatenated into a single string separated by newline characters.
 
-        problem = item["text"]
-        solution = item["code"]
-        embedding = ai_provider.generate_embedding(problem, ai_provider.EMBEDDINGS_LLM)
-        score = 0.0
-        test_list = item["test_list"]
-        context = generate_context(solution, test_list)
-        trainings.store_training(task_id, problem, solution, embedding, score, context)
-        logger.info(f"Stored training for problem: {problem}")
+        Args:
+            solution (str): The code solution to be included in the context.
+            test_list (list): A list of test cases related to the solution.
+
+        Returns:
+            str: A formatted string containing the solution and test list.
+        """
+        context = f"Solution:\n{solution}\n\nTest List:\n" + "\n".join(test_list)
+        return context
 
 
-def main():
+    def process_csv_and_store(self, data: List[dict]):
+        """
+        Process a list of dictionaries containing task data and store it in the database.
+
+        This method iterates through each item in the provided data list, checks if a 
+        training record with the same task ID already exists in the database, and if 
+        not, it generates an embedding, creates a context string, and stores the new 
+        training data in the database.
+
+        Args:
+            data (List[dict]): A list of dictionaries where each dictionary contains 
+            task data including 'task_id', 'text', 'code', and 'test_list'.
+        """
+        for item in data:
+            task_id = item["task_id"]
+
+            if self.trainings.get_training_by_task_id(task_id):
+                logger.info(f"Training for task: {task_id} already exists. Skipping...")
+                continue
+
+            problem = item["text"]
+            solution = item["code"]
+            embedding = self.ai_provider.generate_embedding(problem, self.ai_provider.EMBEDDINGS_LLM)
+            score = 0.0
+            test_list = item["test_list"]
+            context = self.generate_context(solution, test_list)
+            self.trainings.store_training(task_id, problem, solution, embedding, score, context)
+            logger.info(f"Stored training for problem: {problem}")
+
+
+    def run(self, path: str):
+        """
+        Execute the process of loading data from a specified path and storing it in the database.
+
+        This method loads the data from the specified CSV file path using the DataLoader,
+        and then processes and stores the data in the database by calling the 
+        process_csv_and_store method.
+
+        Args:
+            path (str): The file path to the CSV file containing the task data.
+        """
+        data = DataLoader.load_mbpp(path)
+        self.process_csv_and_store(data)
+
+
+if __name__ == "__main__":
     api_key = Settings().OPENAI_API_KEY
     open_ai = OpenAI(api_key=api_key)
     prompt_template = PromptTemplate()
@@ -51,9 +94,5 @@ def main():
 
     db = next(get_db())
     trainings = Trainings(db)
-    data = DataLoader.load_mbpp(args.path)
-    process_csv_and_store(data, trainings, ai_provider)
-
-
-if __name__ == "__main__":
-    main()
+    load_data_trainings = LoadDataTrainings(trainings, ai_provider)
+    load_data_trainings.run(args.path)
