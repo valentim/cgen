@@ -15,7 +15,6 @@ The primary goal of this project is to develop a code generation system that eva
 - [Installation](#installation)
     - [Requirements](#requirements)
 - [Usage](#usage)
-- [Project Structure](#structure)
 - [Development](#development)
 - [CI/CD](#continuous-integration-ci)
 - [Contributing](#contributing)
@@ -70,15 +69,38 @@ To install the necessary dependencies, you'll need [Poetry](https://python-poetr
     poetry install
     ```
 ## Requirements
-- Python >= 3.10.12
+- Python >= 3.10.12,<4.0
 - Poetry >= 1.1.12
+- Docker
+- Docker Compose
 
 ## Usage
 1. To run the project, use the following command:
     ```sh
-    poetry run python src/main.py
+    docker-compose up -d
     ```
+2. Enter in the container:
+    ```sh
+    docker-compose exec cgen bash
+    ```
+3. Execute the CLI commands:
 
+    ```sh
+    poetry run cgen load_data --path datasets/mbpp.jsonl
+    ```
+    ```sh
+    poetry run cgen train_model --lines 10
+    ```
+    ```sh
+    poetry run cgen summarize
+    ```
+    ![alt text](docs/cli-summary.png)
+
+4. To view details about the commands:
+    ```sh
+    poetry run cgen --help
+    ```
+    ![alt text](docs/cli-help.png)
 ## Development
 ### Code Style
 This project uses PEP 8 for code style guidelines. We use flake8 and black for linting and formatting.
