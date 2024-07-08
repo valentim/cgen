@@ -24,8 +24,6 @@ services:
     container_name: cgen
     stdin_open: true
     tty: true
-    volumes:
-      - ./:/app
     depends_on:
       db:
         condition: service_healthy
