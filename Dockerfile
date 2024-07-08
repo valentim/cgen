@@ -15,8 +15,7 @@ ENV PYTHONUNBUFFERED=1
 USER cgen
 WORKDIR /app
 
-COPY poetry.lock pyproject.toml README.md run.sh pytest.ini /app/
-COPY /src /app/src
+COPY . /app/
 
 USER root
 RUN pip install -U pip poetry
