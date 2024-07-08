@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  db:
+    image: pgvector/pgvector:pg15
+    restart: always
+    ports:
+      - '5434:5432'
+    environment:
+      POSTGRES_USER: cgen
+      POSTGRES_PASSWORD: cgen
+      POSTGRES_DB: cgen
+    volumes:
+       - ./data/db:/var/lib/postgresql/data
+       - ./psql/db-ext-vector.sql:/docker-entrypoint-initdb.d/db-ext-vector.sql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "cgen", "-U", "cgen"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  cgen:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cgen
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
