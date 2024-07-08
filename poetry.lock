@@ -81,6 +81,14 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "charset-normalizer"
+version = "3.3.2"
+description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
+category = "main"
+optional = false
+python-versions = ">=3.7.0"
+
+[[package]]
 name = "click"
 version = "8.1.7"
 description = "Composable command line interface toolkit"
@@ -146,6 +154,18 @@ pycodestyle = ">=2.12.0,<2.13.0"
 pyflakes = ">=3.2.0,<3.3.0"
 
 [[package]]
+name = "greenlet"
+version = "3.0.3"
+description = "Lightweight in-process concurrent programming"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["sphinx", "furo"]
+test = ["objgraph", "psutil"]
+
+[[package]]
 name = "h11"
 version = "0.14.0"
 description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
@@ -209,6 +229,73 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "jsonpatch"
+version = "1.33"
+description = "Apply JSON-Patches (RFC 6902)"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, !=3.6.*"
+
+[package.dependencies]
+jsonpointer = ">=1.9"
+
+[[package]]
+name = "jsonpointer"
+version = "3.0.0"
+description = "Identify specific nodes in a JSON document (RFC 6901)"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "langchain-core"
+version = "0.2.11"
+description = "Building applications with LLMs through composability"
+category = "main"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+
+[package.dependencies]
+jsonpatch = ">=1.33,<2.0"
+langsmith = ">=0.1.75,<0.2.0"
+packaging = ">=23.2,<25"
+pydantic = [
+    {version = ">=1,<3", markers = "python_full_version < \"3.12.4\""},
+    {version = ">=2.7.4,<3.0.0", markers = "python_full_version >= \"3.12.4\""},
+]
+PyYAML = ">=5.3"
+tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<9.0.0"
+
+[[package]]
+name = "langchain-openai"
+version = "0.1.14"
+description = "An integration package connecting OpenAI and LangChain"
+category = "main"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+
+[package.dependencies]
+langchain-core = ">=0.2.2,<0.3"
+openai = ">=1.32.0,<2.0.0"
+tiktoken = ">=0.7,<1"
+
+[[package]]
+name = "langsmith"
+version = "0.1.83"
+description = "Client library to connect to the LangSmith LLM Tracing and Evaluation Platform."
+category = "main"
+optional = false
+python-versions = "<4.0,>=3.8.1"
+
+[package.dependencies]
+orjson = ">=3.9.14,<4.0.0"
+pydantic = [
+    {version = ">=1,<3", markers = "python_full_version < \"3.12.4\""},
+    {version = ">=2.7.4,<3.0.0", markers = "python_full_version >= \"3.12.4\""},
+]
+requests = ">=2,<3"
+
+[[package]]
 name = "mccabe"
 version = "0.7.0"
 description = "McCabe checker, plugin for flake8"
@@ -244,6 +331,14 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "numpy"
+version = "2.0.0"
+description = "Fundamental package for array computing in Python"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[[package]]
 name = "openai"
 version = "1.35.7"
 description = "The official Python library for the openai API"
@@ -264,10 +359,18 @@ typing-extensions = ">=4.7,<5"
 datalib = ["numpy (>=1)", "pandas-stubs (>=1.1.0.11)", "pandas (>=1.2.3)"]
 
 [[package]]
+name = "orjson"
+version = "3.10.6"
+description = "Fast, correct Python JSON library supporting dataclasses, datetimes, and numpy"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
 name = "packaging"
 version = "24.1"
 description = "Core utilities for Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.8"
 
@@ -278,6 +381,17 @@ description = "Utility library for gitignore style pattern matching of file path
 category = "dev"
 optional = false
 python-versions = ">=3.8"
+
+[[package]]
+name = "pgvector"
+version = "0.3.0"
+description = "pgvector support for Python"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+numpy = "*"
 
 [[package]]
 name = "platformdirs"
@@ -303,6 +417,14 @@ python-versions = ">=3.8"
 [package.extras]
 dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
+
+[[package]]
+name = "psycopg2-binary"
+version = "2.9.9"
+description = "psycopg2 - Python-PostgreSQL Database Adapter"
+category = "main"
+optional = false
+python-versions = ">=3.7"
 
 [[package]]
 name = "py"
@@ -406,12 +528,83 @@ python-versions = ">=3.8"
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "pyyaml"
+version = "6.0.1"
+description = "YAML parser and emitter for Python"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "regex"
+version = "2024.5.15"
+description = "Alternative regular expression module, to replace re."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "requests"
+version = "2.32.3"
+description = "Python HTTP for Humans."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+certifi = ">=2017.4.17"
+charset-normalizer = ">=2,<4"
+idna = ">=2.5,<4"
+urllib3 = ">=1.21.1,<3"
+
+[package.extras]
+socks = ["PySocks (>=1.5.6,!=1.5.7)"]
+use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
+
+[[package]]
 name = "sniffio"
 version = "1.3.1"
 description = "Sniff out which async library your code is running under"
 category = "main"
 optional = false
 python-versions = ">=3.7"
+
+[[package]]
+name = "sqlalchemy"
+version = "2.0.31"
+description = "Database Abstraction Library"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+greenlet = {version = "!=0.4.17", markers = "python_version < \"3.13\" and (platform_machine == \"aarch64\" or platform_machine == \"ppc64le\" or platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"AMD64\" or platform_machine == \"win32\" or platform_machine == \"WIN32\")"}
+typing-extensions = ">=4.6.0"
+
+[package.extras]
+asyncio = ["greenlet (!=0.4.17)"]
+mypy = ["mypy (>=0.910)"]
+mssql = ["pyodbc"]
+mssql-pymssql = ["pymssql"]
+mssql-pyodbc = ["pyodbc"]
+mysql = ["mysqlclient (>=1.4.0)"]
+mysql-connector = ["mysql-connector-python"]
+mariadb-connector = ["mariadb (>=1.0.1,!=1.1.2,!=1.1.5)"]
+oracle = ["cx_oracle (>=8)"]
+oracle-oracledb = ["oracledb (>=1.0.1)"]
+postgresql = ["psycopg2 (>=2.7)"]
+postgresql-pg8000 = ["pg8000 (>=1.29.1)"]
+postgresql-asyncpg = ["greenlet (!=0.4.17)", "asyncpg"]
+postgresql-psycopg2binary = ["psycopg2-binary"]
+postgresql-psycopg2cffi = ["psycopg2cffi"]
+postgresql-psycopg = ["psycopg (>=3.0.7)"]
+postgresql-psycopgbinary = ["psycopg[binary] (>=3.0.7)"]
+pymysql = ["pymysql"]
+aiomysql = ["greenlet (!=0.4.17)", "aiomysql (>=0.2.0)"]
+aioodbc = ["greenlet (!=0.4.17)", "aioodbc"]
+asyncmy = ["greenlet (!=0.4.17)", "asyncmy (>=0.2.3,!=0.2.4,!=0.2.6)"]
+aiosqlite = ["greenlet (!=0.4.17)", "aiosqlite", "typing_extensions (!=3.10.0.1)"]
+sqlcipher = ["sqlcipher3-binary"]
 
 [[package]]
 name = "tabulate"
@@ -423,6 +616,33 @@ python-versions = ">=3.7"
 
 [package.extras]
 widechars = ["wcwidth"]
+
+[[package]]
+name = "tenacity"
+version = "8.5.0"
+description = "Retry code until it succeeds"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+doc = ["reno", "sphinx"]
+test = ["pytest", "tornado (>=4.5)", "typeguard"]
+
+[[package]]
+name = "tiktoken"
+version = "0.7.0"
+description = "tiktoken is a fast BPE tokeniser for use with OpenAI's models"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+regex = ">=2022.1.18"
+requests = ">=2.26.0"
+
+[package.extras]
+blobfile = ["blobfile (>=2)"]
 
 [[package]]
 name = "toml"
@@ -481,10 +701,24 @@ category = "main"
 optional = false
 python-versions = ">=3.8"
 
+[[package]]
+name = "urllib3"
+version = "2.2.2"
+description = "HTTP library with thread-safe connection pooling, file post, and more."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)"]
+h2 = ["h2 (>=4,<5)"]
+socks = ["pysocks (>=1.5.6,!=1.5.7,<2.0)"]
+zstd = ["zstandard (>=0.18.0)"]
+
 [metadata]
 lock-version = "1.1"
-python-versions = ">=3.10.12"
-content-hash = "cfb248f332db49b917b7f36bd2c0692c60defe939e1856da9e6b341f2b3ea7ba"
+python-versions = ">=3.10.12,<4.0"
+content-hash = "4fa97c3a940dc21b4ba7218b4054166a678b6a958e11352cf337753a14fc9a36"
 
 [metadata.files]
 annotated-types = []
@@ -493,25 +727,36 @@ atomicwrites = []
 attrs = []
 black = []
 certifi = []
+charset-normalizer = []
 click = []
 colorama = []
 coverage = []
 distro = []
 exceptiongroup = []
 flake8 = []
+greenlet = []
 h11 = []
 httpcore = []
 httpx = []
 idna = []
 iniconfig = []
+jsonpatch = []
+jsonpointer = []
+langchain-core = []
+langchain-openai = []
+langsmith = []
 mccabe = []
 mypy = []
 mypy-extensions = []
+numpy = []
 openai = []
+orjson = []
 packaging = []
 pathspec = []
+pgvector = []
 platformdirs = []
 pluggy = []
+psycopg2-binary = []
 py = []
 pycodestyle = []
 pydantic = []
@@ -520,11 +765,18 @@ pyflakes = []
 pytest = []
 pytest-cov = []
 python-dotenv = []
+pyyaml = []
+regex = []
+requests = []
 sniffio = []
+sqlalchemy = []
 tabulate = []
+tenacity = []
+tiktoken = []
 toml = []
 tomli = []
 tqdm = []
 types-tabulate = []
 types-toml = []
 typing-extensions = []
+urllib3 = []

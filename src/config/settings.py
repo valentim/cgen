@@ -10,6 +10,10 @@ load_dotenv()
 
 class Settings:
     @property
+    def DATABASE_URL(self) -> str:
+        return os.getenv("DATABASE_URL", "postgresql://cgen:cgen@localhost:5434/cgen")
+
+    @property
     def ASSISTANT_NAME(self) -> str:
         return os.getenv("ASSISTANT_NAME", "Default Assistant Name")
 

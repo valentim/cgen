@@ -49,8 +49,8 @@ class TreeOfThoughts:
 
         return new_node
 
-    def find_the_best_solution(self, initial_prompt: str, task_id: str, test_list: list[str]) -> SolutionResult | None:
-        prompt = Prompt(initial_prompt, test_list, [], [])
+    def find_the_best_solution(self, task: str, task_id: str, test_list: list[str]) -> SolutionResult | None:
+        prompt = Prompt(task, test_list, [], [])
         root = Node(parent=None, prompt=prompt)
         root.code = self.ai_provider.generate_code(root)
         queue = deque([root])
@@ -74,7 +74,7 @@ class TreeOfThoughts:
 
             if score > best_score or best_score == 0:
                 best_score = score
-                best_solution = SolutionResult(task=initial_prompt, code=current_node.code, score=score)
+                best_solution = SolutionResult(task=task, code=current_node.code, score=score, errors=current_node.prompt.errors)
                 _LOGGER.debug("New best score %d for task %s", score, task_id)
 
             if score == 100:
