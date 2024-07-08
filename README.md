@@ -120,22 +120,22 @@ To set up and run this project, you need to have Docker and Docker Compose insta
 ## Development
 ### Code Style
 This project uses PEP 8 for code style guidelines. We use flake8 and black for linting and formatting.
-#### To check the code style, run:
+#### To check the code style, run (out of the docker container):
 ```sh
-poetry run flake8
+poetry run flake8 src
 ```
-#### To format the code, run:
+#### To format the code, run (out of the docker container):
 ```sh
-poetry run black .
+poetry run black src
 ```
 ### Testing
-This project uses pytest for testing. To run the tests, use:
+This project uses pytest for testing. To run the tests, use (out of the docker container):
 
 ```sh
 poetry config virtualenvs.create true
 poetry run pytest tests/
 ```
-#### To run tests with coverage, use:
+#### To run tests with coverage, use (out of the docker container):
 ```sh
 poetry config virtualenvs.create true
 poetry run pytest tests/ --cov=src
