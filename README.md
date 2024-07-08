@@ -9,6 +9,11 @@ The primary goal of this project is to develop a code generation system that eva
 ### Note
 > **Although the framework is designed to generate and validate code, its processes and components are sufficiently generic to be easily applicable to other purposes that require generating solutions and seeking continuous improvement.**
 
+### Training Results
+To view the results of the latest training session, please visit the following link:
+
+[Latest Training Results](ouput/results.csv)
+
 ## Table of Contents
 - [Pipeline](#pipeline)
     - [Key Components and Process](#key-components-and-process)
@@ -57,6 +62,11 @@ The primary goal of this project is to develop a code generation system that eva
 ## Installation
 
 To install the necessary dependencies, you'll need [Poetry](https://python-poetry.org/docs/#installation).
+
+To set up and run this project, you need to have Docker and Docker Compose installed on your system. Follow the installation instructions at the following links:
+
+[Docker Installation Instructions](https://docs.docker.com/get-docker/)
+[Docker Compose Installation Instructions](https://docs.docker.com/compose/install/)
 
 1. Clone the repository:
 
@@ -116,11 +126,13 @@ poetry run black .
 This project uses pytest for testing. To run the tests, use:
 
 ```sh
-poetry run pytest
+poetry config virtualenvs.create true
+poetry run pytest tests/
 ```
 #### To run tests with coverage, use:
 ```sh
-poetry run pytest --cov
+poetry config virtualenvs.create true
+poetry run pytest tests/ --cov=src
 ```
 ### Environment Variables
 This project uses environment variables for configuration. Copy the .env.example and create a .env file in the root directory of the project. For example:
