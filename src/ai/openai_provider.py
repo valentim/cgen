@@ -12,6 +12,8 @@ from .prompt import Prompt
 from tot.node import Node
 
 _LOGGER = get_logger(__name__)
+
+
 class OpenAIProvider:
     BASE_VARIATIONS = Settings().BASE_VARIATIONS
     EMBEDDINGS_LLM = OpenAIEmbeddings(openai_api_key=Settings().OPENAI_API_KEY)
@@ -29,10 +31,14 @@ class OpenAIProvider:
             _LOGGER.error(f"An error occurred while listing assistants: {e}")
             return []
 
-    def generate_embeddings(self, documents: List[str], embedding_llm_instance: OpenAIEmbeddings):
+    def generate_embeddings(
+        self, documents: List[str], embedding_llm_instance: OpenAIEmbeddings
+    ):
         return embedding_llm_instance.embed_documents(documents)
 
-    def generate_embedding(self, document: str, embedding_llm_instance: OpenAIEmbeddings):
+    def generate_embedding(
+        self, document: str, embedding_llm_instance: OpenAIEmbeddings
+    ):
         return embedding_llm_instance.embed_query(document)
 
     def create_or_get_assistant(self) -> Any:
@@ -95,15 +101,21 @@ class OpenAIProvider:
         prompt_message = self._prompt_template.render(
             "generate_code",
             text=prompt.task,
-            test_cases=format_list(prompt.test_list)
-            if prompt.test_list
-            else "No test cases available",
-            details=format_list(prompt.details, prefix="- ")
-            if prompt.details
-            else "No details available",
-            errors=format_list(prompt.errors, prefix="- ")
-            if prompt.errors
-            else "No errors available",
+            test_cases=(
+                format_list(prompt.test_list)
+                if prompt.test_list
+                else "No test cases available"
+            ),
+            details=(
+                format_list(prompt.details, prefix="- ")
+                if prompt.details
+                else "No details available"
+            ),
+            errors=(
+                format_list(prompt.errors, prefix="- ")
+                if prompt.errors
+                else "No errors available"
+            ),
             bad_code=node.parent.code if node.parent and node.parent.code else "N/A",
         )
 

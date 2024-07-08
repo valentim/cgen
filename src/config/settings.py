@@ -10,6 +10,10 @@ load_dotenv()
 
 class Settings:
     @property
+    def DATASET_PATH(self) -> str:
+        return os.getenv("DATASET_PATH", "datasets/mbpp.jsonl")
+
+    @property
     def DATABASE_URL(self) -> str:
         return os.getenv("DATABASE_URL", "postgresql://cgen:cgen@localhost:5434/cgen")
 
