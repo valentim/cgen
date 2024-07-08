@@ -21,8 +21,7 @@ COPY /src /app/src
 USER root
 RUN pip install -U pip poetry
 
-RUN  poetry config virtualenvs.create false && \
-    poetry install --only main
+RUN  poetry install --only main
 
 USER cgen
 

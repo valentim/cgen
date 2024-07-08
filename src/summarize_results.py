@@ -2,44 +2,39 @@ import os
 import csv
 from evaluation.solution_result import SolutionResult
 from db.session import get_db
-from db.trainings import get_all_trainings
+from db.trainings import Trainings
 from tabulate import tabulate
 
+
 class SummarizeResults:
-    def __init__(self):
-        self.db = next(get_db())
+    def __init__(self, trainings: Trainings):
+        self.trainings = trainings
 
     def process_data(self):
-        output_dir = 'output'
+        output_dir = "output"
         os.makedirs(output_dir, exist_ok=True)
-        csv_file_path = os.path.join(output_dir, 'results.csv')
+        csv_file_path = os.path.join(output_dir, "results.csv")
 
         results = []
-        with open(csv_file_path, mode='w', newline='') as csv_file:
+        with open(csv_file_path, mode="w", newline="") as csv_file:
             writer = csv.writer(csv_file)
             writer.writerow(["Case #", "Task Description", "Code Solution", "Score"])
 
-        data = get_all_trainings(self.db)
+        data = self.trainings.get_all_trainings()
         for use_case in data:
             task_id = use_case.task_id
             problem = use_case.problem
 
             score = use_case.score
             solution = use_case.solution
-   
+
             results.append(SolutionResult(task=problem, code=solution, score=score))
 
-            with open(csv_file_path, mode='a', newline='') as csv_file:
+            with open(csv_file_path, mode="a", newline="") as csv_file:
                 writer = csv.writer(csv_file)
-                writer.writerow([
-                    task_id,
-                    problem,
-                    solution,
-                    score
-                ])
-            
-        return results
+                writer.writerow([task_id, problem, solution, score])
 
+        return results
 
     def display_results(self, results):
         table_data = []
@@ -61,5 +56,7 @@ class SummarizeResults:
 
 
 if __name__ == "__main__":
-    summarize = SummarizeResults()
+    db = next(get_db())
+    trainings = Trainings(db)
+    summarize = SummarizeResults(trainings)
     summarize.run()

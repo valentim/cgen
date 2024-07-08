@@ -36,11 +36,16 @@ def test_import_modules(mock_import_module, code_executor):
     code_executor.import_modules()
     mock_import_module.assert_called_once_with("math")
 
-@patch("evaluation.code_executor.subprocess.check_call", side_effect=subprocess.CalledProcessError(1, 'pip install'))
+
+@patch(
+    "evaluation.code_executor.subprocess.check_call",
+    side_effect=subprocess.CalledProcessError(1, "pip install"),
+)
 def test_install_modules_failure(mock_check_call, code_executor, caplog):
     code_executor.required_modules = ["invalid_module"]
     code_executor.install_modules()
     assert "Failed to install invalid_module" in caplog.text
+
 
 @patch.object(CodeExecutor, "identify_imports")
 @patch.object(CodeExecutor, "install_modules")
@@ -88,6 +93,7 @@ def add(a, b):
     success, error = code_executor.execute_test(code, test_string)
     assert not success
     assert error == ["The code you provided was invalid"]
+
 
 @patch.object(CodeExecutor, "identify_imports")
 @patch.object(CodeExecutor, "install_modules")

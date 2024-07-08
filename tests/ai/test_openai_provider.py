@@ -19,9 +19,9 @@ def openAiProvider():
 def test_get_prompt_details(mock_retry_with_backoff, openAiProvider):
     mock_response = MagicMock()
     mock_response.choices = [MagicMock()]
-    mock_response.choices[
-        0
-    ].message.content = '{"details": ["variation1", "variation2"]}'
+    mock_response.choices[0].message.content = (
+        '{"details": ["variation1", "variation2"]}'
+    )
     mock_retry_with_backoff.return_value = mock_response
 
     class MockPrompt:
@@ -112,21 +112,25 @@ def test_list_assistants_error(openAiProvider):
     assistants = openAiProvider.list_assistants()
     assert assistants == []
 
+
 def test_get_prompt_details_error(openAiProvider):
     openAiProvider._client.chat.completions.create.side_effect = Exception("Error")
     with pytest.raises(Exception, match="Error"):
         openAiProvider.get_prompt_details(MagicMock())
+
 
 def test_generate_code_error(openAiProvider):
     openAiProvider._client.beta.threads.create.side_effect = Exception("Error")
     with pytest.raises(Exception, match="Error"):
         openAiProvider.generate_code(MagicMock())
 
+
 def test_list_assistants_exception(openAiProvider):
     openAiProvider._client.beta.assistants.list.side_effect = Exception("API Error")
     assistants = openAiProvider.list_assistants()
     assert assistants == []
     assert openAiProvider._client.beta.assistants.list.called
+
 
 def test_logging_error_during_list_assistants(openAiProvider, caplog):
     openAiProvider._client.beta.assistants.list.side_effect = Exception("API Error")

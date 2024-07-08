@@ -35,7 +35,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          poetry run pytest --cov=.
+          poetry run pytest tests/ --cov=src
 
       - name: Generate Coverage XML
         run: |

@@ -65,6 +65,7 @@ $bad_code
     with pytest.raises(ValueError, match="Prompt template is not properly configured"):
         PromptTemplate()
 
+
 def test_initialization_success(mock_settings):
     template = PromptTemplate()
     assert isinstance(template, PromptTemplate)
