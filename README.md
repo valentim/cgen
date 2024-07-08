@@ -78,6 +78,12 @@ To set up and run this project, you need to have Docker and Docker Compose insta
     ```sh
     poetry install
     ```
+### Settings
+1. Create the .env
+    ```sh
+    cp .env.example .env
+    ```
+2. Add your openai api key in the env var named `OPENAI_API_KEY` (To see all the env var details check [development](#development) doc)
 ## Requirements
 - Python >= 3.10.12,<4.0
 - Poetry >= 1.1.12
