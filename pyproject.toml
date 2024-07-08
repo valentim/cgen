@@ -19,6 +19,7 @@ SQLAlchemy = "^2.0.31"
 psycopg2-binary = "^2.9.9"
 langchain-openai = "^0.1.14"
 pgvector = "^0.3.0"
+injector = "^0.22.0"
 
 [tool.poetry.dev-dependencies]
 black = "*"

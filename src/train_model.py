@@ -1,4 +1,5 @@
 import argparse
+from injector import inject, Injector
 from config.settings import Settings
 from openai import OpenAI
 from ai.openai_provider import OpenAIProvider
@@ -10,31 +11,54 @@ from utils.data_loader import DataLoader
 from db.session import get_db
 from db.trainings import Trainings
 from summarize_results import SummarizeResults
+from dependency_container import DependencyContainer
 from typing import List
 
 
-class CodeGenerationApp:
-    def __init__(self, api_key: str, data_path: str):
-        self.api_key = api_key
-        self.data_path = data_path
+class TrainModel:
+    @inject
+    def __init__(self,
+                 ai_provider: OpenAIProvider,
+                 code_executor: CodeExecutor,
+                 code_evaluator: CodeEvaluator,
+                 tot: TreeOfThoughts,
+                 trainings: Trainings,
+                 summarize_results: SummarizeResults):
+        self.ai_provider = ai_provider
+        self.code_executor = code_executor
+        self.code_evaluator = code_evaluator
+        self.tot = tot
+        self.trainings = trainings
+        self.summarize_results = summarize_results
+        self.data_path = Settings().DATASET_PATH
         self.results = []
 
-        open_ai = OpenAI(api_key=api_key)
-        prompt_template = PromptTemplate()
-        self.ai_provider = OpenAIProvider(open_ai, prompt_template)
-        self.code_executor = CodeExecutor()
-        self.code_evaluator = CodeEvaluator(self.code_executor)
-        self.tot = TreeOfThoughts(
-            self.ai_provider, self.code_evaluator, max_depth=Settings().THREE_MAX_DEPTH
-        )
-        self.sumarize_results = SummarizeResults()
-        self.trainings = Trainings(next(get_db()))
-
     def load_data(self) -> List[dict]:
+        """
+        Loads data from the specified data path.
+
+        This method reads data from the file specified by the `data_path` attribute
+        and returns it as a list of dictionaries.
+
+        Returns:
+            List[dict]: A list of dictionaries, where each dictionary represents
+                        a data entry loaded from the data file.
+        """
         return DataLoader.load_mbpp(self.data_path)
 
     def generate_context(self, code: str, score: float, errors: list) -> str:
-        """Generate context from solution and test list."""
+        """
+        Generates a descriptive context from a solution code, score, and list of errors.
+
+        Args:
+            code (str): The attempted solution code.
+            score (float): The score assigned to the solution.
+            errors (list): A list of errors found in the solution.
+
+        Returns:
+            str: A string containing the generated context, including the solution code,
+                score, and formatted list of errors.
+        """
         context = f"Tried solution: {code}\nScore: {score}"
         if errors:
             errors = [str(error) for error in errors]
@@ -43,6 +67,23 @@ class CodeGenerationApp:
         return context
 
     def process_data(self, data: List[dict], lines: int = None):
+        """
+        Processes the provided data and optionally limits the number of lines processed.
+
+        This method processes the input data, generates embeddings, stores data in the database,
+        find a solution, and writes results to a CSV file. It iterates through the provided data and processes
+        each entry. If the 'lines' parameter is specified, it limits the processing to the
+        specified number of lines.
+
+        Args:
+            data (List[dict]): A list of dictionaries, where each dictionary represents
+                            a data entry to be processed.
+            lines (int, optional): The number of lines to process. If not specified, all
+                                lines in the data will be processed.
+
+        Returns:
+            None
+        """
         processed_count = 0
 
         for use_case in data:
@@ -85,9 +126,23 @@ class CodeGenerationApp:
             processed_count += 1
 
     def run(self, lines: int = None):
+        """
+        Executes the code generation process and optionally limits the number of lines processed.
+
+        This method orchestrates the entire workflow of loading data, processing it,
+        and displaying the results. If the 'lines' parameter is specified, it limits
+        the processing to the specified number of lines.
+
+        Args:
+            lines (int, optional): The number of lines to process. If not specified,
+                                all lines in the data will be processed.
+
+        Returns:
+            None
+        """       
         data_mbpp = self.load_data()
         self.process_data(data_mbpp, lines)
-        self.sumarize_results.display_results(self.results)
+        self.summarize_results.display_results(self.results)
 
 
 if __name__ == "__main__":
@@ -95,11 +150,12 @@ if __name__ == "__main__":
     if not api_key:
         raise ValueError("OPENAI_API_KEY environment variable is not set")
 
-    parser = argparse.ArgumentParser(description="Run the Code Generation App")
+    parser = argparse.ArgumentParser(description="Run the TrainModel")
     parser.add_argument(
         "--lines", type=int, help="Number of lines to process from the dataset"
     )
     args = parser.parse_args()
 
-    app = CodeGenerationApp(api_key=api_key, data_path=Settings().DATA_PATH)
+    injector = Injector([DependencyContainer()])
+    app = injector.get(TrainModel)
     app.run(lines=args.lines)
