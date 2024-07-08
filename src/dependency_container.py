@@ -11,6 +11,7 @@ from tot.three_of_thoughts import TreeOfThoughts
 from db.trainings import Trainings
 from summarize_results import SummarizeResults
 
+
 class DependencyContainer(Module):
     @singleton
     @provider
@@ -29,7 +30,9 @@ class DependencyContainer(Module):
 
     @singleton
     @provider
-    def provide_ai_provider(self, openai: OpenAI, prompt_template: PromptTemplate) -> OpenAIProvider:
+    def provide_ai_provider(
+        self, openai: OpenAI, prompt_template: PromptTemplate
+    ) -> OpenAIProvider:
         return OpenAIProvider(openai, prompt_template)
 
     @singleton
@@ -44,8 +47,15 @@ class DependencyContainer(Module):
 
     @singleton
     @provider
-    def provide_tree_of_thoughts(self, ai_provider: OpenAIProvider, code_evaluator: CodeEvaluator, settings: Settings) -> TreeOfThoughts:
-        return TreeOfThoughts(ai_provider, code_evaluator, max_depth=settings.THREE_MAX_DEPTH)
+    def provide_tree_of_thoughts(
+        self,
+        ai_provider: OpenAIProvider,
+        code_evaluator: CodeEvaluator,
+        settings: Settings,
+    ) -> TreeOfThoughts:
+        return TreeOfThoughts(
+            ai_provider, code_evaluator, max_depth=settings.THREE_MAX_DEPTH
+        )
 
     @singleton
     @provider

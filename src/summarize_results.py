@@ -18,7 +18,8 @@ class SummarizeResults:
         1. Creates an output directory if it doesn't already exist.
         2. Initializes a CSV file with headers for storing the results.
         3. Retrieves all training data from the database.
-        4. Iterates through the training data, appending each result to the results list and writing it to the CSV file.
+        4. Iterates through the training data, appending each result to the results list and
+        writing it to the CSV file.
         5. Returns the list of results.
 
         The CSV file includes the following columns:
@@ -91,8 +92,8 @@ class SummarizeResults:
         1. Processes the data to generate results.
         2. Displays the results in a formatted table.
 
-        The `process_data` method retrieves and processes the training data, 
-        generating a list of SolutionResult objects. The `display_results` 
+        The `process_data` method retrieves and processes the training data,
+        generating a list of SolutionResult objects. The `display_results`
         method then takes these results and displays them in a table format.
 
         Returns:

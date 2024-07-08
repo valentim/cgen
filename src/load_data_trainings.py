@@ -17,13 +17,12 @@ class LoadDataTrainings:
         self.trainings = trainings
         self.ai_provider = ai_provider
 
-
     def generate_context(self, solution: str, test_list: list) -> str:
         """
         Generate a context string from the provided solution and test list.
 
         This method formats the solution and test list into a single string that
-        includes the solution followed by the test list. The test list items are 
+        includes the solution followed by the test list. The test list items are
         concatenated into a single string separated by newline characters.
 
         Args:
@@ -36,18 +35,17 @@ class LoadDataTrainings:
         context = f"Solution:\n{solution}\n\nTest List:\n" + "\n".join(test_list)
         return context
 
-
     def process_csv_and_store(self, data: List[dict]):
         """
         Process a list of dictionaries containing task data and store it in the database.
 
-        This method iterates through each item in the provided data list, checks if a 
-        training record with the same task ID already exists in the database, and if 
-        not, it generates an embedding, creates a context string, and stores the new 
+        This method iterates through each item in the provided data list, checks if a
+        training record with the same task ID already exists in the database, and if
+        not, it generates an embedding, creates a context string, and stores the new
         training data in the database.
 
         Args:
-            data (List[dict]): A list of dictionaries where each dictionary contains 
+            data (List[dict]): A list of dictionaries where each dictionary contains
             task data including 'task_id', 'text', 'code', and 'test_list'.
         """
         for item in data:
@@ -59,20 +57,23 @@ class LoadDataTrainings:
 
             problem = item["text"]
             solution = item["code"]
-            embedding = self.ai_provider.generate_embedding(problem, self.ai_provider.EMBEDDINGS_LLM)
+            embedding = self.ai_provider.generate_embedding(
+                problem, self.ai_provider.EMBEDDINGS_LLM
+            )
             score = 0.0
             test_list = item["test_list"]
             context = self.generate_context(solution, test_list)
-            self.trainings.store_training(task_id, problem, solution, embedding, score, context)
+            self.trainings.store_training(
+                task_id, problem, solution, embedding, score, context
+            )
             logger.info(f"Stored training for problem: {problem}")
-
 
     def run(self, path: str):
         """
         Execute the process of loading data from a specified path and storing it in the database.
 
         This method loads the data from the specified CSV file path using the DataLoader,
-        and then processes and stores the data in the database by calling the 
+        and then processes and stores the data in the database by calling the
         process_csv_and_store method.
 
         Args:

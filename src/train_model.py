@@ -1,14 +1,11 @@
 import argparse
 from injector import inject, Injector
 from config.settings import Settings
-from openai import OpenAI
 from ai.openai_provider import OpenAIProvider
-from ai.prompt_template import PromptTemplate
 from evaluation.code_executor import CodeExecutor
 from evaluation.code_evaluator import CodeEvaluator
 from tot.three_of_thoughts import TreeOfThoughts
 from utils.data_loader import DataLoader
-from db.session import get_db
 from db.trainings import Trainings
 from summarize_results import SummarizeResults
 from dependency_container import DependencyContainer
@@ -17,13 +14,15 @@ from typing import List
 
 class TrainModel:
     @inject
-    def __init__(self,
-                 ai_provider: OpenAIProvider,
-                 code_executor: CodeExecutor,
-                 code_evaluator: CodeEvaluator,
-                 tot: TreeOfThoughts,
-                 trainings: Trainings,
-                 summarize_results: SummarizeResults):
+    def __init__(
+        self,
+        ai_provider: OpenAIProvider,
+        code_executor: CodeExecutor,
+        code_evaluator: CodeEvaluator,
+        tot: TreeOfThoughts,
+        trainings: Trainings,
+        summarize_results: SummarizeResults,
+    ):
         self.ai_provider = ai_provider
         self.code_executor = code_executor
         self.code_evaluator = code_evaluator
@@ -62,7 +61,7 @@ class TrainModel:
         context = f"Tried solution: {code}\nScore: {score}"
         if errors:
             errors = [str(error) for error in errors]
-            context += f"\nErrors found in the tried solution:\n" + "\n".join(errors)
+            context += "\nErrors found in the tried solution:\n" + "\n".join(errors)
 
         return context
 
@@ -139,7 +138,7 @@ class TrainModel:
 
         Returns:
             None
-        """       
+        """
         data_mbpp = self.load_data()
         self.process_data(data_mbpp, lines)
         self.summarize_results.display_results(self.results)
