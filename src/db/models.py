@@ -8,7 +8,7 @@ class Training(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     task_id = Column(Integer, unique=True, nullable=True)
-    problem = Column(Text, unique=True, nullable=False)
+    problem = Column(Text, nullable=False)
     solution = Column(Text, nullable=False)
     embedding = Column(Vector(1536), nullable=False)
     score = Column(Float, nullable=False)
